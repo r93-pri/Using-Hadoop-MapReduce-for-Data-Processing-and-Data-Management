@@ -1,0 +1,24 @@
+Steps to run the python scripts on hadoop:
+
+1. Dowload the input tables and our mapper and reducer python files from the blackabord.
+
+2. Give executable permission to the python files:
+	chmod 775 /home/cloudera/Downloads/pageView_mapper.py
+	chmod 775 /home/cloudera/Downloads/pageView_reducer.py
+
+3. Create a folder for storing the input files on hadoop file system:
+	hdfs dfs -mkdir /user/cloudera/input_Q2
+
+4. Copy the input files on the hadoop file system:
+	hdfs dfs -put /home/cloudera/page_view.txt /user/cloudera/input_Q2/
+	hdfs dfs -put /home/cloudera/user.txt /user/cloudera/input_Q2/
+
+5. Execute the following command to run the python files on hadoop:
+	hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -input /user/cloudera/input_Q2/ -output /user/cloudera/output_Q2 -mapper /home/cloudera/Downloads/pageView_mapper.py -reducer /home/cloudera/Downloads/pageView_reducer.py
+
+6. After the command is executed, output will be generated in the following file on the hadoop file system: '/user/cloudera/output_Q2'
+
+7. Copy the output folder to your local directory:
+	hdfs dfs -get /user/cloudera/output_Q2 /home/cloudera/
+
+8. Inside the '/home/cloudera/outut_Q2' folder, we can find the result file as 'part-00000'.

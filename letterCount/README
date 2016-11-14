@@ -1,0 +1,26 @@
+Steps to run the python scripts on hadoop:
+
+1. Dowload the input file using the following command:
+	curl http://www.gutenberg.org/cache/epub/100/pg100.txt | perl -pe 's/^\xEF\xBB\xBF//' > /home/cloudera/pg100.txt
+
+2. Download our mapper and reducer python files from blackboard.
+
+3. Give executable permission to the python files:
+	chmod 775 /home/cloudera/Downloads/LetterCount_mapper.py
+	chmod 775 /home/cloudera/Downloads/LetterCount_reducer.py
+
+4. Create a folder for storing the input files on hadoop file system:
+	hdfs dfs -mkdir /user/cloudera/input_Q1
+
+5. Copy the input file on the hadoop file system:
+	hdfs dfs -put /home/cloudera/pg100.txt /user/cloudera/input_Q1/
+
+6. Execute the following command to run the python files on hadoop:
+	hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar -input /user/cloudera/input_Q1/ -output /user/cloudera/output_Q1 -mapper /home/cloudera/Downloads/LetterCount_mapper.py -reducer /home/cloudera/Downloads/LetterCount_reducer.py
+
+7. After the command is executed, output will be generated in the following file on the hadoop file system: '/user/cloudera/output_Q1'
+
+8. Copy the output folder to your local directory:
+	hdfs dfs -get /user/cloudera/output_Q1 /home/cloudera/
+
+9. Inside the '/home/cloudera/outut_Q1' folder, we can find the result file as 'part-00000'.
